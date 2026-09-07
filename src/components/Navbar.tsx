@@ -1,58 +1,89 @@
-import { Moon, Sun, Infinity } from 'lucide-react';
-import { useTheme } from './ThemeContext';
+import { useState, useEffect } from 'react';
+import { Radio } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function Navbar() {
-  const { theme, toggleTheme } = useTheme();
+  const [currentDate, setCurrentDate] = useState('');
+
+  useEffect(() => {
+    const now = new Date();
+    const formatted = now.toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    setCurrentDate(formatted);
+  }, []);
 
   return (
     <motion.header 
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: -15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
+      transition={{ duration: 0.4 }}
+      className="sticky top-0 z-50 w-full bg-page/95 backdrop-blur-md border-b-2 border-border-ink"
     >
-      <div className="pointer-events-auto backdrop-blur-xl rounded-full px-5 py-2.5 flex items-center justify-between gap-4 shadow-2xl transition-all w-full max-w-5xl glass-panel border border-brand-primary/25">
-        {/* Restored Older Logo with Infinity SVG vector */}
-        <a href="#" className="flex items-center gap-2.5 font-bold tracking-tight hover:opacity-90 transition-all group select-none">
-          <div className="text-brand-primary transition-transform duration-300 group-hover:scale-110">
-            <Infinity className="w-5 h-5" strokeWidth={2.5} />
-          </div>
-          <span className="font-display text-sm font-bold text-heading tracking-tight">BotPlayground</span>
+      {/* Top Broadsheet Dateline & Telemetry Bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 flex flex-wrap items-center justify-between text-[11px] font-mono border-b border-border-subtle tracking-wider uppercase text-muted select-none">
+        <div className="flex items-center gap-3">
+          <span className="font-bold text-heading">THE BOTPLAYGROUND DISPATCH</span>
+          <span className="hidden sm:inline text-border-subtle">|</span>
+          <span className="hidden sm:inline">VOL. IV · NO. 42</span>
+          <span className="hidden md:inline text-border-subtle">|</span>
+          <span className="hidden md:inline">{currentDate || 'MONDAY, SEPTEMBER 7, 2026'}</span>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          <span className="hidden lg:flex items-center gap-1.5">
+            <Radio className="w-3 h-3 text-heading animate-pulse" />
+            <span>SLA: 99.98% UPTIME</span>
+          </span>
+          <span className="text-border-subtle hidden lg:inline">|</span>
+          <span className="font-bold text-heading">CIRCULATION: OPEN SOURCE</span>
+        </div>
+      </div>
+
+      {/* Main Navigation & Editorial Controls */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+        {/* Masthead Brand Logo */}
+        <a 
+          href="#" 
+          className="group flex items-center gap-2 select-none"
+        >
+          <span className="font-serif text-xl sm:text-2xl font-black tracking-tight text-heading uppercase group-hover:opacity-80 transition-opacity">
+            BotPlayground
+          </span>
+          <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono font-extrabold uppercase border border-border-ink bg-card text-heading shadow-[1px_1px_0px_var(--border-ink)]">
+            GAZETTE
+          </span>
         </a>
 
-        {/* Navigation links - clean hover color, no underline */}
-        <nav className="hidden md:flex items-center gap-7 text-xs font-semibold tracking-wide text-muted">
-          {['About', 'Themes', 'Projects', 'Skills', 'Contact'].map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`} 
-              className="py-1 hover:text-brand-primary transition-colors select-none"
+        {/* Newspaper Section Navigation */}
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 font-mono text-xs uppercase tracking-widest font-bold text-muted">
+          {[
+            { label: 'Front Page', href: '#' },
+            { label: 'Philosophy', href: '#about' },
+            { label: 'Pillars', href: '#themes' },
+            { label: 'Dispatches', href: '#projects' },
+            { label: 'Classifieds', href: '#skills' },
+          ].map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="py-1 hover:text-heading transition-colors relative hover:underline decoration-1 underline-offset-4"
             >
-              {item}
+              {link.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2.5">
-          {/* Theme switcher: Only Moon and Sun icon, no text label */}
-          <button 
-            onClick={toggleTheme}
-            className="p-2 rounded-full border border-brand-primary/30 hover:border-brand-primary/70 transition-all text-xs glass-panel text-heading hover:shadow-sm active:scale-90 flex items-center justify-center"
-            aria-label="Toggle dark/light theme"
+        {/* Right Action: Dispatch Button */}
+        <div className="flex items-center gap-3">
+          <a
+            href="#contact"
+            className="btn-broadsheet px-3.5 sm:px-4 py-1.5 text-xs font-mono font-bold uppercase select-none inline-flex items-center gap-1.5"
           >
-            {theme === 'dark' ? (
-              <Sun className="w-4 h-4 text-brand-primary" />
-            ) : (
-              <Moon className="w-4 h-4 text-brand-primary" />
-            )}
-          </button>
-          
-          <a 
-            href="#contact" 
-            className="inline-flex items-center gap-1.5 btn-primary text-xs font-extrabold px-4.5 py-1.5 rounded-full tracking-wide select-none"
-          >
-            Get in Touch
+            <span>TELEGRAM</span>
           </a>
         </div>
       </div>
