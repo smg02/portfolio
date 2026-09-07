@@ -319,43 +319,44 @@ body {
   }
 }
 
-/* Anime Fast-Action Motion & Speedlines */
-.anime-speedlines-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999980;
-  overflow: hidden;
-  animation: animeFlash 0.32s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+/* 3D Cinematic Broadsheet Page Turn (Pure Paper, Zero Text) */
+.page-turn-perspective {
+  perspective: 2400px;
+  transform-style: preserve-3d;
 }
 
-@keyframes animeFlash {
-  0% { opacity: 0; transform: scaleY(0.7); }
-  25% { opacity: 0.85; transform: scaleY(1.1); }
-  60% { opacity: 0.6; transform: scaleY(1.05); }
-  100% { opacity: 0; transform: scaleY(1); }
+.animate-broadsheetPageTurn {
+  animation: broadsheetPageTurnAnim 0.54s cubic-bezier(0.25, 1, 0.35, 1) forwards;
 }
 
-.anime-motion-content-down {
-  animation: animeMotionDownAnim 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+@keyframes broadsheetPageTurnAnim {
+  0% {
+    transform: translate3d(100%, 0, 0) rotateY(0deg) skewY(-1.5deg);
+    box-shadow: -15px 0 35px rgba(0, 0, 0, 0.3);
+  }
+  35% {
+    transform: translate3d(18%, 0, 0) rotateY(-36deg) skewY(2deg);
+    box-shadow: -35px 0 60px rgba(0, 0, 0, 0.45);
+  }
+  65% {
+    transform: translate3d(-25%, 0, 0) rotateY(-72deg) skewY(3deg);
+    box-shadow: -45px 0 70px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    transform: translate3d(-125%, 0, 0) rotateY(-115deg) skewY(0deg);
+    box-shadow: -15px 0 25px rgba(0, 0, 0, 0.15);
+  }
 }
 
-@keyframes animeMotionDownAnim {
-  0% { transform: scaleY(1); filter: blur(0px); }
-  35% { transform: scaleY(1.03) translateY(-14px); filter: blur(2px); }
-  75% { transform: scaleY(1.01) translateY(-3px); filter: blur(0.8px); }
-  100% { transform: scaleY(1) translateY(0); filter: blur(0px); }
+.animate-pageTurnBackdrop {
+  animation: broadsheetBackdropAnim 0.54s ease-out forwards;
 }
 
-.anime-motion-content-up {
-  animation: animeMotionUpAnim 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-}
-
-@keyframes animeMotionUpAnim {
-  0% { transform: scaleY(1); filter: blur(0px); }
-  35% { transform: scaleY(1.03) translateY(14px); filter: blur(2px); }
-  75% { transform: scaleY(1.01) translateY(3px); filter: blur(0.8px); }
-  100% { transform: scaleY(1) translateY(0); filter: blur(0px); }
+@keyframes broadsheetBackdropAnim {
+  0% { opacity: 0; }
+  35% { opacity: 0.35; }
+  65% { opacity: 0.35; }
+  100% { opacity: 0; }
 }
 
 /* Vintage Letterpress Stamp Impression */
