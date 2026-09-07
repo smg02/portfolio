@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
 export function PageTurn() {
-  const [isTurning, setIsTurning] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [direction, setDirection] = useState<'down' | 'up'>('down');
 
   useEffect(() => {
     const handleLinkClick = (e: MouseEvent) => {
@@ -12,31 +13,36 @@ export function PageTurn() {
       const href = anchor.getAttribute('href');
       if (!href) return;
 
-      // Intercept internal anchor links
+      // Intercept internal anchor navigation
       if (href.startsWith('#')) {
         e.preventDefault();
 
-        // Keep URL bar clean - prevent # from appearing
+        // Keep URL bar clean - strip hash
         window.history.replaceState(null, '', window.location.pathname);
 
         const targetId = href.length > 1 ? href.substring(1) : '';
         const targetElement = targetId ? document.getElementById(targetId) : null;
 
-        setIsTurning(true);
+        const currentY = window.scrollY;
+        const targetY = targetElement 
+          ? targetElement.getBoundingClientRect().top + window.scrollY - 75 
+          : 0;
 
-        // At midpoint of the swift paper curl, scroll to the destination
-        setTimeout(() => {
-          if (targetElement) {
-            targetElement.scrollIntoView({ behavior: 'smooth' });
-          } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        }, 180);
+        // Determine if navigating downward or upward
+        const dir = targetY >= currentY ? 'down' : 'up';
+        setDirection(dir);
+        setIsActive(true);
 
-        // Finish transition
+        // Fast-paced kinetic scroll occurs concurrently WITH the motion
+        window.scrollTo({
+          top: Math.max(0, targetY),
+          behavior: 'smooth'
+        });
+
+        // End motion precisely as scroll completes
         setTimeout(() => {
-          setIsTurning(false);
-        }, 460);
+          setIsActive(false);
+        }, 390);
       }
     };
 
@@ -46,27 +52,30 @@ export function PageTurn() {
     };
   }, []);
 
-  if (!isTurning) return null;
+  if (!isActive) return null;
 
   return (
     <div className="fixed inset-0 z-[999990] pointer-events-none overflow-hidden select-none">
-      {/* Background shadow layer */}
-      <div className="absolute inset-0 bg-border-ink/20 animate-pageTurnShadow" />
+      {/* Dynamic Directional Printing Press Paper Motion Overlay */}
+      <div
+        className={`absolute inset-x-0 w-full h-[120vh] bg-page border-y-2 border-border-ink shadow-[0_0_50px_rgba(0,0,0,0.3)] ${
+          direction === 'down' ? 'animate-pressRollDown' : 'animate-pressRollUp'
+        }`}
+      >
+        {/* Newsprint Crease & Directional Motion Texture */}
+        <div className="absolute inset-0 bg-gradient-to-b from-border-ink/10 via-transparent to-border-ink/10 pointer-events-none" />
 
-      {/* Tactile Broadsheet Paper Leaf Sweeping Across */}
-      <div className="absolute inset-y-0 right-0 w-full bg-page border-l-[3px] border-border-ink shadow-[-25px_0_45px_rgba(0,0,0,0.35)] animate-pageTurnSweep">
-        {/* Newsprint Crease & Curl Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-border-ink/15 via-transparent to-transparent pointer-events-none" />
-        
-        {/* Subtle broadsheet hairline margin guide on the turning page */}
-        <div className="h-full w-full border-r border-border-subtle/50 flex flex-col justify-between p-6 opacity-30">
-          <div className="border-b border-border-subtle pb-2 flex justify-between font-mono text-[9px] uppercase">
-            <span>THE BOTPLAYGROUND GAZETTE</span>
-            <span>SECTION IN TRANSIT</span>
+        {/* Directional Broadsheet Guidelines */}
+        <div className="max-w-7xl mx-auto h-full px-6 flex flex-col justify-between py-12 border-x border-border-subtle/40 opacity-40">
+          <div className="flex justify-between font-mono text-[10px] uppercase text-muted tracking-widest border-b border-border-subtle pb-2">
+            <span>THE BOTPLAYGROUND PRESS</span>
+            <span>{direction === 'down' ? '▼ ADVANCING DOWNWARD' : '▲ REWINDING UPWARD'}</span>
+            <span>ROTARY EDITION</span>
           </div>
-          <div className="border-t border-border-subtle pt-2 flex justify-between font-mono text-[9px] uppercase">
-            <span>PRINT ARCHIVE</span>
-            <span>AUTONOMOUS DISPATCH</span>
+
+          <div className="flex justify-between font-mono text-[10px] uppercase text-muted tracking-widest border-t border-border-subtle pt-2">
+            <span>HIGH-SPEED MECHANICAL FEED</span>
+            <span>DISPATCH TRANSIT</span>
           </div>
         </div>
       </div>
