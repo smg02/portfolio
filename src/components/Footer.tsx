@@ -1,90 +1,107 @@
-import { Github, Linkedin, Mail, ArrowRight, Infinity } from 'lucide-react';
+import { Github, Linkedin, Mail, Send, Newspaper } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function Footer() {
   return (
-    <footer id="contact" className="p-4 sm:p-6 lg:p-8 mt-12">
+    <footer id="contact" className="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
+      {/* Department Section Ribbon */}
+      <div className="flex items-center justify-between border-b-2 border-border-ink pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-muted select-none">
+        <div className="flex items-center gap-2">
+          <span className="bg-heading text-page px-2 py-0.5 font-bold">BACK PAGE</span>
+          <span className="font-bold text-heading">THE TELEGRAPH OFFICE // CORRESPONDENCE</span>
+        </div>
+        <span className="hidden sm:inline">OFFICIAL CABLEGRAM TERMINAL</span>
+      </div>
+
+      {/* Main Telegram Dispatch Box */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.98, y: 30 }}
-        whileInView={{ opacity: 1, scale: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="glass-card rounded-[2.5rem] px-6 py-20 sm:py-28 flex flex-col items-center justify-between min-h-[580px] relative overflow-hidden text-center border-brand-primary/30"
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.5 }}
+        className="broadsheet-card p-8 sm:p-12 lg:p-16 relative overflow-hidden"
       >
-        <div className="w-full flex items-center justify-between text-xs tracking-wider text-muted font-medium px-4 mb-16">
-          <div className="flex flex-wrap gap-4 sm:gap-6 items-center justify-center">
-            <a href="#" className="text-heading hover:text-brand-primary transition-colors">Home</a>
-            <a href="#about" className="hover:text-brand-primary transition-colors">About</a>
-            <a href="#themes" className="hover:text-brand-primary transition-colors">Themes</a>
-            <a href="#projects" className="hover:text-brand-primary transition-colors">Projects</a>
-            <a href="#skills" className="hover:text-brand-primary transition-colors">Skills</a>
+        {/* Telegram Header */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-border-ink pb-4 mb-8 font-mono text-xs">
+          <div className="flex items-center gap-2 text-heading font-bold">
+            <Newspaper className="w-4 h-4" />
+            <span>URGENT DISPATCH WIRE SERVICE</span>
           </div>
-          {/* Older Logo in Footer */}
-          <div className="flex items-center text-brand-primary">
-            <Infinity className="w-6 h-6" strokeWidth={2.5} />
+          <div className="news-stamp text-[10px]">
+            TELEGRAM PRIORITY 1
           </div>
         </div>
 
-        <div className="max-w-4xl my-auto space-y-8">
-          <div>
-            <span className="text-xs font-mono text-brand-secondary uppercase tracking-widest font-bold block mb-4">
-              [INITIATE WORKFLOW]
-            </span>
-            <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-heading leading-[1.05]">
-              Got a problem worth automating?<br/>
-              <span className="text-muted">Let's build something.</span>
-            </h2>
-          </div>
+        {/* Telegram Center Content */}
+        <div className="max-w-3xl mx-auto text-center space-y-6">
+          <span className="font-mono text-xs text-muted uppercase tracking-widest font-bold block">
+            [INITIATE NEW PIPELINE OR CONSULTATION]
+          </span>
 
-          <div className="pt-4 flex items-center justify-center">
-            <a 
-              href="mailto:syedmdghouse02@gmail.com" 
-              className="group inline-flex flex-col sm:flex-row items-center justify-center gap-3 btn-primary font-extrabold text-xs uppercase tracking-wider px-10 py-4 rounded-full w-full sm:w-auto active:scale-95"
+          <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-black text-heading leading-[1.05] tracking-tight">
+            Got a complex data problem worth automating?
+          </h2>
+
+          <p className="font-editorial italic text-base sm:text-lg md:text-xl text-muted leading-relaxed">
+            "Whether harvesting sovereign bond yields, deploying resilient browser fleets, or architecting high-throughput data backends — transmit your coordinates."
+          </p>
+
+          {/* Action Button: Transmit via Telegram */}
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="mailto:syedmdghouse02@gmail.com"
+              className="btn-broadsheet inline-flex items-center justify-center gap-2.5 px-8 py-4 text-xs sm:text-sm uppercase tracking-wider w-full sm:w-auto"
             >
               <span>syedmdghouse02@gmail.com</span>
-              <span className="flex items-center gap-1.5 font-bold">
-                <span>GET IN TOUCH</span>
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-              </span>
+              <Send className="w-4 h-4" />
             </a>
           </div>
 
-          <div className="flex items-center justify-center gap-6 pt-2 font-mono text-xs text-heading">
-            <a 
-              href="https://github.com/smg02" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="hover:text-brand-primary transition-colors inline-flex items-center gap-1.5 py-1"
+          {/* Official Cablegram Channels */}
+          <div className="pt-6 flex flex-wrap items-center justify-center gap-6 sm:gap-8 font-mono text-xs text-heading">
+            <a
+              href="https://github.com/smg02"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 hover:underline decoration-1 underline-offset-4"
             >
-              <Github className="w-3.5 h-3.5 text-brand-secondary" /> <span>GitHub</span>
+              <Github className="w-4 h-4" />
+              <span>GITHUB // smg02</span>
             </a>
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-secondary/30 hidden sm:block"></span>
-            <a 
-              href="https://www.linkedin.com/in/ghouse02/" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="hover:text-brand-primary transition-colors inline-flex items-center gap-1.5 py-1"
+
+            <span className="text-border-subtle hidden sm:inline">◆</span>
+
+            <a
+              href="https://www.linkedin.com/in/ghouse02/"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 hover:underline decoration-1 underline-offset-4"
             >
-              <Linkedin className="w-3.5 h-3.5 text-brand-secondary" /> <span>LinkedIn</span>
+              <Linkedin className="w-4 h-4" />
+              <span>LINKEDIN // ghouse02</span>
             </a>
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-secondary/30 hidden sm:block"></span>
-            <a 
-              href="mailto:syedmdghouse02@gmail.com" 
-              className="hover:text-brand-primary transition-colors inline-flex items-center gap-1.5 py-1"
+
+            <span className="text-border-subtle hidden sm:inline">◆</span>
+
+            <a
+              href="mailto:syedmdghouse02@gmail.com"
+              className="inline-flex items-center gap-1.5 hover:underline decoration-1 underline-offset-4"
             >
-              <Mail className="w-3.5 h-3.5 text-brand-secondary" /> <span>Email</span>
+              <Mail className="w-4 h-4" />
+              <span>ELECTRONIC MAIL</span>
             </a>
           </div>
         </div>
 
-        <div className="w-full flex flex-col md:flex-row items-center justify-between text-xs text-muted gap-4 mt-16 pt-8 border-t border-brand-primary/20 font-normal">
-          <div className="font-mono text-[11px] sm:text-xs">
-            © 2026 Ghouse — Built, broken, debugged, and deployed from the playground.
+        {/* Colophon & Publication Credits */}
+        <div className="mt-16 pt-6 border-t border-border-subtle flex flex-col md:flex-row items-center justify-between text-[11px] font-mono text-muted gap-4">
+          <div>
+            © 2026 Mohammed Ghouse — Typeset in Playfair Display, Newsreader & Space Grotesk.
           </div>
-          <div className="flex items-center gap-4 sm:gap-5 font-medium font-mono text-[11px] sm:text-xs text-heading">
-            <a href="https://github.com/smg02" target="_blank" rel="noreferrer" className="hover:text-brand-primary transition-colors">GitHub</a>
-            <a href="https://www.linkedin.com/in/ghouse02/" target="_blank" rel="noreferrer" className="hover:text-brand-primary transition-colors">LinkedIn</a>
-            <a href="mailto:syedmdghouse02@gmail.com" className="hover:text-brand-primary transition-colors">Email</a>
+          <div className="flex items-center gap-4 text-heading font-bold uppercase">
+            <a href="#" className="hover:underline">TOP OF EDITION ↑</a>
+            <span className="text-border-subtle">|</span>
+            <span>CIRCULATION: GLOBAL</span>
           </div>
         </div>
       </motion.div>

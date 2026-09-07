@@ -9,23 +9,19 @@ export function ClickEffects() {
 
       if (!clickable) return;
 
-      // Spawn a luminous ripple particle at the click coordinates
+      // Spawn an ink press ripple particle at the click coordinates
       const ripple = document.createElement('div');
       ripple.className = 'click-ripple-particle';
       ripple.style.left = `${e.clientX}px`;
       ripple.style.top = `${e.clientY}px`;
-
-      // Randomly cycle between the couple accent colors (Emerald Mint / Coral / Amber)
-      const rand = Math.random();
-      const color = rand > 0.5 ? 'var(--primary-accent)' : rand > 0.25 ? 'var(--secondary-accent)' : 'var(--tertiary-accent)';
-      ripple.style.background = `radial-gradient(circle, color-mix(in oklab, ${color} 75%, transparent) 0%, color-mix(in oklab, ${color} 0%, transparent) 70%)`;
-      ripple.style.boxShadow = `0 0 20px color-mix(in oklab, ${color} 60%, transparent)`;
+      ripple.style.background = 'radial-gradient(circle, color-mix(in oklab, var(--border-ink) 35%, transparent) 0%, transparent 70%)';
+      ripple.style.border = '1px solid color-mix(in oklab, var(--border-ink) 40%, transparent)';
 
       document.body.appendChild(ripple);
 
       setTimeout(() => {
         ripple.remove();
-      }, 700);
+      }, 600);
 
       // If it's an internal anchor link, trigger target section highlight animation
       const href = clickable.getAttribute('href');

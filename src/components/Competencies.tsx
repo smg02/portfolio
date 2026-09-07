@@ -1,43 +1,43 @@
 import { motion } from 'motion/react';
+import { Award, ShieldCheck } from 'lucide-react';
 
 export function Competencies() {
   const pillars = [
     {
       num: '01',
       title: 'Python & Data Engineering',
-      desc: 'Fault-tolerant ETL pipelines, Pandas transformations, robust schema validation, and high-throughput data processing engines.',
-      tags: ['ETL Pipelines', 'Pandas', 'APIs', 'Processing'],
-      color: 'primary'
+      desc: 'Fault-tolerant ETL pipelines, Pandas and DuckDB transformations, robust schema validation, and high-throughput data processing engines.',
+      tags: ['ETL Pipelines', 'Pandas & DuckDB', 'Schema Contracts', 'Processing'],
+      status: 'VERIFIED'
     },
     {
       num: '02',
-      title: 'Financial Data',
-      desc: 'Institutional securities modeling, sovereign bonds yields, high-precision reference data normalization, and continuous market feed parsing.',
-      tags: ['Securities', 'Sovereign Bonds', 'Reference Data', 'Market Sources'],
-      color: 'secondary'
+      title: 'Financial Data Architecture',
+      desc: 'Institutional securities modeling, sovereign bond yield curves, high-precision reference data normalization, and continuous market feed parsing.',
+      tags: ['Securities', 'Sovereign Bonds', 'Basis Normalization', 'Tick Feeds'],
+      status: 'AUDITED'
     },
     {
       num: '03',
-      title: 'Automation',
+      title: 'Autonomous Swarms & Scraping',
       desc: 'Resilient headless scraping, DAG-scheduled jobs, Airflow orchestration, proactive anomaly monitoring, and end-to-end workflow automation.',
-      tags: ['Scraping', 'Scheduled Jobs', 'Airflow', 'Monitoring'],
-      color: 'a20'
+      tags: ['Playwright', 'Airflow DAGs', 'DOM Anomaly Engine', 'Webhooks'],
+      status: 'ACTIVE'
     },
     {
       num: '04',
-      title: 'Backend & Full-Stack',
-      desc: 'High-performance asynchronous services with Flask and Node.js, reactive dashboard interfaces with React, and strictly indexed SQL schemas.',
-      tags: ['Flask', 'Node.js', 'React', 'SQL & REST'],
-      color: 'primary'
+      title: 'High-Concurrency Backend Systems',
+      desc: 'High-performance asynchronous services with FastAPI and Flask, reactive dashboard interfaces with React, and strictly indexed SQL schemas.',
+      tags: ['FastAPI', 'PostgreSQL', 'Redis Queues', 'Strict Pydantic'],
+      status: 'SUB-15MS'
     },
     {
       num: '05',
-      title: 'Infrastructure & DevOps',
-      desc: 'Production Linux server hardening, containerized worker swarms with Docker, resilient Git trunk-based workflows, automated CI/CD releases, and scalable cloud object storage sinks.',
-      tags: ['Linux', 'Docker', 'Git', 'CI/CD', 'Cloud / S3 Storage'],
-      color: 'secondary',
+      title: 'Infrastructure, Linux & DevOps',
+      desc: 'Production Linux server hardening, containerized worker swarms with Docker, resilient Git trunk-based workflows, automated CI/CD releases, and scalable cloud S3 lakehouse sinks.',
+      tags: ['Linux / Ubuntu', 'Docker Swarms', 'GitHub Actions', 'AWS S3 Lakehouse'],
       wide: true,
-      status: 'PRODUCTION READY'
+      status: 'PRODUCTION HARBOR'
     }
   ];
 
@@ -48,69 +48,79 @@ export function Competencies() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.45 } }
   };
 
   return (
-    <section id="themes" className="py-20 px-6 max-w-6xl mx-auto space-y-10 border-t border-brand-primary/25">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.5 }}
-        className="text-center max-w-2xl mx-auto mb-14"
-      >
-        <span className="px-4 py-1.5 rounded-full glass-panel text-xs font-mono text-brand-primary uppercase tracking-wider font-bold border border-brand-primary/30">
-          Core Competencies
-        </span>
-        <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-heading tracking-tight mt-6">
-          Five Engineering Pillars
-        </h2>
-        <p className="text-muted text-sm sm:text-base mt-4">
-          Disciplines engineered to convert chaotic ingestion into deterministic pipelines.
-        </p>
-      </motion.div>
+    <section id="themes" className="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
+      {/* Department Section Ribbon */}
+      <div className="flex items-center justify-between border-b-2 border-border-ink pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-muted select-none">
+        <div className="flex items-center gap-2">
+          <span className="bg-heading text-page px-2 py-0.5 font-bold">PAGE 03</span>
+          <span className="font-bold text-heading">SPECIAL REPORT // PILLARS</span>
+        </div>
+        <span className="hidden sm:inline">DISCIPLINARY AUDIT</span>
+      </div>
 
+      {/* Section Title */}
+      <div className="mb-10 text-center md:text-left">
+        <div className="inline-flex items-center gap-2 font-mono text-xs text-muted uppercase tracking-widest mb-2">
+          <Award className="w-3.5 h-3.5 text-heading" />
+          <span>Core Engineering Disciplines</span>
+        </div>
+        <h2 className="font-serif text-3xl sm:text-5xl font-black text-heading tracking-tight">
+          The Five Architectural Pillars
+        </h2>
+        <p className="font-editorial italic text-base sm:text-lg text-muted mt-2 max-w-3xl">
+          Disciplines engineered to convert fragmented, chaotic ingestion into deterministic pipelines that run autonomously.
+        </p>
+      </div>
+
+      {/* Broadsheet Columns Grid */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ once: true, margin: "-40px" }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
-        {pillars.map((p, i) => (
+        {pillars.map((pillar, i) => (
           <motion.div 
             variants={itemVariants} 
             key={i} 
-            className={`glass-card rounded-2xl p-7 flex flex-col justify-between ${p.wide ? 'md:col-span-2 lg:col-span-2' : ''}`}
+            className={`broadsheet-card p-6 flex flex-col justify-between ${
+              pillar.wide ? 'md:col-span-2 lg:col-span-2' : ''
+            }`}
           >
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className={`font-mono text-xs font-bold ${
-                  p.color === 'primary' ? 'text-brand-primary' : p.color === 'secondary' ? 'text-brand-secondary' : 'text-playground-a20'
-                }`}>
-                  [{p.num}]
+              {/* Header inside pillar column */}
+              <div className="flex items-center justify-between border-b border-border-ink pb-3 mb-4 font-mono text-xs">
+                <span className="font-black text-heading text-sm">
+                  DISPATCH // #{pillar.num}
                 </span>
-                {p.status ? (
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-playground-a20 font-bold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-playground-a20 pulse-a20"></span> {p.status}
-                  </span>
-                ) : (
-                  <span className={`w-2.5 h-2.5 rounded-full ${
-                    p.color === 'primary' ? 'bg-brand-primary pulse-primary' : p.color === 'secondary' ? 'bg-brand-secondary pulse-secondary' : 'bg-playground-a20 pulse-a20'
-                  }`}></span>
-                )}
+                <span className="news-stamp text-[9px] px-1.5 py-0.5">
+                  {pillar.status}
+                </span>
               </div>
-              <h3 className="font-display text-xl font-bold text-heading mb-3">
-                {p.title}
+
+              {/* Title */}
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-heading mb-3 leading-snug">
+                {pillar.title}
               </h3>
-              <p className="text-muted text-xs sm:text-sm leading-relaxed mb-6">
-                {p.desc}
+
+              {/* Description */}
+              <p className="font-editorial text-muted text-sm sm:text-base leading-relaxed mb-6">
+                {pillar.desc}
               </p>
             </div>
-            <div className="flex flex-wrap gap-2 pt-4 border-t border-brand-primary/20">
-              {p.tags.map(tag => (
-                <span key={tag} className="text-[11px] font-mono px-2.5 py-1 rounded-full glass-pill text-heading hover:border-brand-primary/60 transition-colors">
+
+            {/* Tags Ribbon */}
+            <div className="pt-4 border-t border-border-subtle flex flex-wrap gap-1.5 font-mono text-[11px]">
+              {pillar.tags.map((tag) => (
+                <span 
+                  key={tag} 
+                  className="px-2 py-0.5 border border-border-ink bg-page-soft text-heading font-medium"
+                >
                   {tag}
                 </span>
               ))}
@@ -118,6 +128,9 @@ export function Competencies() {
           </motion.div>
         ))}
       </motion.div>
+
+      {/* Broadsheet Rule Ending Competencies Section */}
+      <div className="mt-14 rule-double-bottom"></div>
     </section>
   );
 }

@@ -21,7 +21,7 @@ export default function App() {
         <Navbar />
         <main>
           <Hero />
-          <Suspense fallback={<div className="py-24 text-center text-muted font-mono text-sm uppercase">Loading Core Modules...</div>}>
+          <Suspense fallback={<div className="py-24 text-center text-muted font-mono text-xs uppercase tracking-widest">TYPESETTING DISPATCHES...</div>}>
             <About />
             <Competencies />
             <Projects />
