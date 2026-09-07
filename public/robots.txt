@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+# Explicit crawler optimization
+Disallow: /src/
+Disallow: /node_modules/
+
+# Sitemaps & Host specification
+Host: https://botplayground.co.in
 Sitemap: https://botplayground.co.in/sitemap.xml

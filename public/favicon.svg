@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <style>
+      :root {
+        --bg: #121314;
+        --fg: #f6f3eb;
+        --border: #f6f3eb;
+        --hairline: rgba(246, 243, 235, 0.6);
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f6f3eb;
+          --fg: #121314;
+          --border: #121314;
+          --hairline: rgba(18, 19, 20, 0.6);
+        }
+      }
+    </style>
+  </defs>
+
+  <!-- Broadsheet Badge Background -->
+  <rect x="16" y="16" width="480" height="480" rx="72" fill="var(--bg)" stroke="var(--border)" stroke-width="18" />
+
+  <!-- Inner Hairline Rule (Newspaper Front-Page Dateline Box) -->
+  <rect x="44" y="44" width="424" height="424" rx="48" fill="none" stroke="var(--hairline)" stroke-width="4" />
+
+  <!-- Corner Pica Tick Accents -->
+  <path d="M 64 74 L 64 64 L 74 64" fill="none" stroke="var(--border)" stroke-width="4" stroke-linecap="square" />
+  <path d="M 448 74 L 448 64 L 438 64" fill="none" stroke="var(--border)" stroke-width="4" stroke-linecap="square" />
+  <path d="M 64 438 L 64 448 L 74 448" fill="none" stroke="var(--border)" stroke-width="4" stroke-linecap="square" />
+  <path d="M 448 438 L 448 448 L 438 448" fill="none" stroke="var(--border)" stroke-width="4" stroke-linecap="square" />
+
+  <!-- Grand Letterpress Serif 'B' -->
+  <g fill="var(--fg)">
+    <text 
+      x="50%" 
+      y="54%" 
+      text-anchor="middle" 
+      dominant-baseline="central"
+      font-family="'Playfair Display', Georgia, 'Times New Roman', serif" 
+      font-size="310" 
+      font-weight="900" 
+      letter-spacing="-0.02em"
+    >B</text>
+  </g>
+
+  <!-- Telegraphic Dispatch Pulse Dot (Bottom Right) -->
+  <circle cx="372" cy="364" r="16" fill="var(--fg)" />
+</svg>

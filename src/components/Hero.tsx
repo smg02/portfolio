@@ -23,10 +23,16 @@ export function Hero() {
         {/* Grand Newspaper Masthead Title */}
         <h1 className="font-serif text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-heading leading-[0.92] my-3">
           BotPlayground
+          <span className="sr-only"> — Mohammed Ghouse (Syed Mohammed Ghouse) | Python Developer & Data Engineer</span>
         </h1>
 
+        {/* Publisher Credit & Name Anchor */}
+        <div className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-heading mt-1 mb-2">
+          THE ENGINEERING DISPATCHES OF MOHAMMED GHOUSE <span className="text-muted font-normal">(SYED MOHAMMED GHOUSE)</span>
+        </div>
+
         {/* Motto / Sub-masthead */}
-        <p className="font-serif italic text-sm sm:text-base md:text-lg text-muted mt-2 mb-4">
+        <p className="font-serif italic text-sm sm:text-base md:text-lg text-muted mt-1 mb-4">
           "All the code that's fit to run — Architectural rigor, autonomous engines, and deterministic pipelines."
         </p>
 
