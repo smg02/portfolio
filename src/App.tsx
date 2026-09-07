@@ -21,7 +21,7 @@ export default function App() {
         <PageTurn />
         <ClickEffects />
         <Navbar />
-        <main>
+        <main id="content-main" className="origin-center transition-filter duration-150">
           <Hero />
           <Suspense fallback={<div className="py-24 text-center text-muted font-mono text-xs uppercase tracking-widest">TYPESETTING DISPATCHES...</div>}>
             <About />
