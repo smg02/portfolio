@@ -49,7 +49,8 @@ export function CustomCursor() {
     let prevY = -100;
     let rafId: number;
 
-    const TRAIL_DURATION = 520; // milliseconds ink trail lasts before fully soaking into paper
+    // Fast, responsive trail duration (soft and snappy)
+    const TRAIL_DURATION = 280;
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
@@ -60,21 +61,20 @@ export function CustomCursor() {
         brushRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
       }
 
-      // Check context under cursor
+      // Check hover context
       const target = e.target as HTMLElement | null;
-      const interactive = target?.closest('a, button, [role="button"], input, select, textarea');
-      const text = target?.closest('p, h1, h2, h3, h4, h5, h6, blockquote, .dropcap, li span, code');
-      setIsHovered(!!(interactive || text));
+      const isInteractive = target?.closest('a, button, [role="button"], input, select, textarea');
+      const isText = target?.closest('p, h1, h2, h3, h4, h5, h6, blockquote, .dropcap, li span, code');
+      setIsHovered(!!(isInteractive || isText));
 
-      // Calculate speed for dynamic calligraphic line width
+      // Calculate speed for dynamic soft stroke width
       const dx = mouseX - prevX;
       const dy = mouseY - prevY;
       const speed = Math.hypot(dx, dy);
       prevX = mouseX;
       prevY = mouseY;
 
-      // Faster speed = thinner dynamic stroke; slower = rich fuller ink
-      const strokeWidth = Math.max(1.8, Math.min(6.5, 7.0 - speed * 0.12));
+      const strokeWidth = Math.max(2.2, Math.min(6.5, 7.5 - speed * 0.15));
 
       points.push({
         x: mouseX,
@@ -89,31 +89,31 @@ export function CustomCursor() {
     const onMouseLeave = () => setIsVisible(false);
     const onMouseEnter = () => setIsVisible(true);
 
-    // Render loop: draws calligraphic brush strokes and smoothly dissolves them
+    // Render loop: draws soft, responsive paint wash trail
     const render = (now: number) => {
       ctx.clearRect(0, 0, width, height);
 
-      // Remove expired trail points
+      // Clean old points
       while (points.length > 0 && now - points[0].time > TRAIL_DURATION) {
         points.shift();
       }
 
       if (points.length > 1) {
-        // Read theme ink color dynamically
         const isDark = document.documentElement.classList.contains('dark');
-        const inkBase = isDark ? '246, 243, 235' : '18, 19, 20';
+        const inkRGB = isDark ? '246, 243, 235' : '18, 19, 20';
 
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        // Draw calligraphic curves using midpoint bezier interpolation
+        // 1. Soft Paint Wash Layer (outer diffuse stroke)
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = `rgba(${inkRGB}, 0.25)`;
+
         for (let i = 1; i < points.length; i++) {
           const p1 = points[i - 1];
           const p2 = points[i];
-          const age = now - p2.time;
-          const life = Math.max(0, 1 - age / TRAIL_DURATION);
+          const life = Math.max(0, 1 - (now - p2.time) / TRAIL_DURATION);
 
-          // Quadratic midpoints for organic, silky smooth ink lines
           const midX = (p1.x + p2.x) / 2;
           const midY = (p1.y + p2.y) / 2;
 
@@ -121,10 +121,21 @@ export function CustomCursor() {
           ctx.moveTo(p1.x, p1.y);
           ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
 
-          ctx.lineWidth = p2.width * (0.4 + life * 0.6);
-          ctx.strokeStyle = `rgba(${inkBase}, ${life * 0.75})`;
+          // Outer soft paint wash
+          ctx.lineWidth = p2.width * (0.8 + life * 0.6);
+          ctx.strokeStyle = `rgba(${inkRGB}, ${life * 0.22})`;
+          ctx.stroke();
+
+          // Inner rich paint core
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.quadraticCurveTo(p1.x, p1.y, midX, midY);
+          ctx.lineWidth = p2.width * (0.4 + life * 0.5);
+          ctx.strokeStyle = `rgba(${inkRGB}, ${life * 0.65})`;
           ctx.stroke();
         }
+
+        ctx.shadowBlur = 0;
       }
 
       rafId = requestAnimationFrame(render);
@@ -151,13 +162,13 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* Calligraphic Ink Trail Canvas */}
+      {/* Soft Responsive Paint Trail Canvas */}
       <canvas
         ref={canvasRef}
         className="pointer-events-none fixed inset-0 z-[999997] select-none"
       />
 
-      {/* Realistic Calligraphy Brush / Dipping Pen */}
+      {/* Artist's Paint Brush Cursor */}
       <div className="pointer-events-none fixed inset-0 z-[999999] overflow-hidden select-none">
         <div
           ref={brushRef}
@@ -169,52 +180,56 @@ export function CustomCursor() {
           <div
             className={`transition-transform duration-150 ease-out origin-top-left ${
               isClicking
-                ? 'scale-90 translate-y-1 rotate-[-48deg]'
+                ? 'scale-90 translate-y-0.5 rotate-[-44deg]'
                 : isHovered
-                ? 'scale-105 rotate-[-44deg] translate-y-[-1px]'
-                : 'rotate-[-36deg] scale-100'
+                ? 'scale-105 rotate-[-38deg] translate-y-[-1px]'
+                : 'rotate-[-30deg] scale-100'
             }`}
           >
-            {/* SVG Calligraphy Brush: Precision Bristle Tip touches (0,0) exactly */}
+            {/* Fine Artist Round Paint Brush SVG */}
             <svg
-              width="36"
-              height="36"
-              viewBox="0 0 48 48"
+              width="34"
+              height="34"
+              viewBox="0 0 44 44"
               fill="none"
-              className="drop-shadow-[1px_2px_3px_rgba(0,0,0,0.3)]"
+              className="drop-shadow-[1px_2px_4px_rgba(0,0,0,0.28)]"
             >
-              {/* Brush Handle: Vintage Tapered Bamboo / Wood */}
+              {/* Tapered Wooden Artist Handle */}
               <path
-                d="M16 16L38 38C40 40 43 40 45 38C47 36 47 33 45 31L23 9L16 16Z"
+                d="M15 15L36 36C38 38 41 38 43 36C45 34 45 31 43 29L22 8L15 15Z"
                 fill="var(--card-bg)"
                 stroke="var(--border-ink)"
-                strokeWidth="1.5"
+                strokeWidth="1.4"
                 strokeLinejoin="round"
               />
 
-              {/* Decorative Handle Rings */}
-              <line x1="25" y1="11" x2="32" y2="18" stroke="var(--border-ink)" strokeWidth="1.2" opacity="0.6" />
-              <line x1="33" y1="19" x2="40" y2="26" stroke="var(--border-ink)" strokeWidth="1.2" opacity="0.6" />
-
-              {/* Ferrule: Antique Brass / Metal Collar */}
+              {/* Handle Contour Grain Line */}
               <path
-                d="M11 11L18 18L15 21L8 14L11 11Z"
+                d="M23 11L41 29"
+                stroke="var(--border-subtle)"
+                strokeWidth="1"
+              />
+
+              {/* Metallic Ferrule (Nickel / Brass Collar) */}
+              <path
+                d="M10 10L17 17L14 20L7 13L10 10Z"
                 fill="var(--border-ink)"
                 stroke="var(--border-ink)"
                 strokeWidth="1"
               />
+              <line x1="12" y1="12" x2="9" y2="15" stroke="var(--bg-page)" strokeWidth="0.8" opacity="0.7" />
 
-              {/* Bristle Tip: Pointed Calligraphy Horsehair / Sumi Bristles */}
+              {/* Soft Pointed Sable Bristles: Tip curves directly to (0,0) */}
               <path
-                d="M0 0C3 5 7 11 11 11L14 8C11 4 5 1 0 0Z"
+                d="M0 0C2.5 4 6 9.5 10 10L13 7C9.5 3 4 0.5 0 0Z"
                 fill="var(--border-ink)"
                 stroke="var(--border-ink)"
                 strokeWidth="1.2"
                 strokeLinejoin="round"
               />
 
-              {/* Wet Ink Highlight on Bristle Tip */}
-              <circle cx="2" cy="2" r="1.5" fill="var(--bg-page)" opacity="0.75" />
+              {/* Wet Paint Bead on Bristle Tip */}
+              <circle cx="2" cy="2" r="1.5" fill="var(--bg-page)" opacity="0.8" />
             </svg>
           </div>
         </div>
