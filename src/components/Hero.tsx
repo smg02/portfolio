@@ -22,7 +22,7 @@ export function Hero() {
 
         {/* Grand Newspaper Masthead Title */}
         <h1 className="font-serif text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-heading leading-[0.92] my-3">
-          The BotPlayground
+          BotPlayground
         </h1>
 
         {/* Motto / Sub-masthead */}
@@ -62,7 +62,7 @@ export function Hero() {
             <div className="font-mono text-xs text-muted uppercase tracking-wider">
               <span className="font-bold text-heading">BY MOHAMMED GHOUSE</span>
               <span className="mx-2">/</span>
-              <span>SPECIAL DISPATCH FROM HYDERABAD</span>
+              <span>SPECIAL DISPATCH FROM VELLORE</span>
             </div>
             <div className="news-stamp text-[10px]">
               VERIFIED ARCHITECTURE
@@ -91,16 +91,16 @@ export function Hero() {
 
           {/* Front Page Interactive Actions */}
           <div className="pt-4 flex flex-wrap items-center gap-4">
-            <a 
-              href="#projects" 
+            <a
+              href="#projects"
               className="btn-broadsheet inline-flex items-center gap-2.5 px-6 py-3 text-xs uppercase"
             >
               <span>Inspect Dispatches</span>
               <ArrowRight className="w-4 h-4" />
             </a>
 
-            <a 
-              href="#about" 
+            <a
+              href="#about"
               className="btn-broadsheet-outline inline-flex items-center gap-2 px-6 py-3 text-xs uppercase"
             >
               <span>Read Op-Ed Philosophy</span>
@@ -152,7 +152,7 @@ export function Hero() {
               <FileText className="w-4 h-4" />
               <span>Operational Guarantees</span>
             </h3>
-            
+
             <ul className="space-y-2.5 font-mono text-xs text-body">
               {[
                 'Zero silent data drops under peak volume',

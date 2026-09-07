@@ -3,22 +3,24 @@ import { useEffect, useRef, useState } from 'react';
 type CursorMode = 'default' | 'link' | 'text' | 'button';
 
 export function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
-  const labelRef = useRef<HTMLSpanElement>(null);
+  const pointerRef = useRef<HTMLDivElement>(null);
+  const haloRef = useRef<HTMLDivElement>(null);
 
   const [mode, setMode] = useState<CursorMode>('default');
   const [isClicking, setIsClicking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Disable on touch devices
+    // Disable on coarse touch devices
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
     let mouseX = -100;
     let mouseY = -100;
-    let ringX = -100;
-    let ringY = -100;
+    let haloX = -100;
+    let haloY = -100;
+    let prevMouseX = -100;
+    let prevMouseY = -100;
+    let angle = 0;
     let rafId: number;
 
     const onMouseMove = (e: MouseEvent) => {
@@ -26,8 +28,18 @@ export function CustomCursor() {
       mouseY = e.clientY;
       if (!isVisible) setIsVisible(true);
 
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      // Compute slight mechanical rotation from velocity
+      const vx = mouseX - prevMouseX;
+      const vy = mouseY - prevMouseY;
+      const speed = Math.hypot(vx, vy);
+      if (speed > 1) {
+        angle = Math.atan2(vy, vx) * (180 / Math.PI) + 45;
+      }
+      prevMouseX = mouseX;
+      prevMouseY = mouseY;
+
+      if (pointerRef.current) {
+        pointerRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
       }
 
       // Check context under cursor
@@ -51,7 +63,7 @@ export function CustomCursor() {
 
     const onMouseDown = (e: MouseEvent) => {
       setIsClicking(true);
-      createInkPress(e.clientX, e.clientY);
+      createLetterpressImpression(e.clientX, e.clientY);
     };
 
     const onMouseUp = () => {
@@ -66,13 +78,13 @@ export function CustomCursor() {
       setIsVisible(true);
     };
 
-    // Hardware accelerated lerp loop
+    // Smooth mechanical trailing loop
     const loop = () => {
-      ringX += (mouseX - ringX) * 0.24;
-      ringY += (mouseY - ringY) * 0.24;
+      haloX += (mouseX - haloX) * 0.22;
+      haloY += (mouseY - haloY) * 0.22;
 
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+      if (haloRef.current) {
+        haloRef.current.style.transform = `translate3d(${haloX}px, ${haloY}px, 0)`;
       }
 
       rafId = requestAnimationFrame(loop);
@@ -80,28 +92,38 @@ export function CustomCursor() {
 
     rafId = requestAnimationFrame(loop);
 
-    // Letterpress ink impression effect on click
-    const createInkPress = (x: number, y: number) => {
+    // Creates an authentic letterpress ink stamp impression on click
+    const createLetterpressImpression = (x: number, y: number) => {
+      // 1. Vintage ink seal impression box
+      const stamp = document.createElement('div');
+      stamp.className = 'letterpress-impression px-2.5 py-1 text-[9px] font-mono font-black uppercase tracking-widest text-heading shadow-[2px_2px_0px_var(--border-ink)] select-none';
+      stamp.innerText = 'PRESS IMPRINT';
+      stamp.style.left = `${x}px`;
+      stamp.style.top = `${y}px`;
+      document.body.appendChild(stamp);
+      setTimeout(() => stamp.remove(), 600);
+
+      // 2. Radial ink shockwave
       const wave = document.createElement('div');
       wave.className = 'ink-press-wave';
       wave.style.left = `${x}px`;
       wave.style.top = `${y}px`;
       document.body.appendChild(wave);
+      setTimeout(() => wave.remove(), 350);
 
-      for (let i = 0; i < 5; i++) {
+      // 3. Micro ink spatters
+      for (let i = 0; i < 6; i++) {
         const spark = document.createElement('div');
         spark.className = 'ink-spark';
         spark.style.left = `${x}px`;
         spark.style.top = `${y}px`;
-        const angle = (i * (Math.PI * 2) / 5) + (Math.random() * 0.4 - 0.2);
-        const dist = 18 + Math.random() * 16;
-        spark.style.setProperty('--dx', `${Math.cos(angle) * dist}px`);
-        spark.style.setProperty('--dy', `${Math.sin(angle) * dist}px`);
+        const a = (i * (Math.PI * 2) / 6) + (Math.random() * 0.3 - 0.15);
+        const dist = 16 + Math.random() * 18;
+        spark.style.setProperty('--dx', `${Math.cos(a) * dist}px`);
+        spark.style.setProperty('--dy', `${Math.sin(a) * dist}px`);
         document.body.appendChild(spark);
         setTimeout(() => spark.remove(), 320);
       }
-
-      setTimeout(() => wave.remove(), 360);
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -122,53 +144,91 @@ export function CustomCursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[999999] overflow-hidden select-none">
-      {/* Precision Center Nib / Focus Dot */}
+      {/* Precision Tip: Antique Fountain Pen Nib / Typesetter Mark */}
       <div
-        ref={dotRef}
-        className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-150 ${
+        ref={pointerRef}
+        className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 ${
           isVisible ? 'opacity-100' : 'opacity-0'
-        } ${
-          mode === 'text'
-            ? 'w-1 h-5 rounded-[1px] bg-border-ink'
-            : mode === 'link' || mode === 'button'
-            ? 'w-1.5 h-1.5 bg-btn-bg'
-            : isClicking
-            ? 'w-1.5 h-1.5 bg-border-ink'
-            : 'w-2 h-2 bg-border-ink'
         }`}
-        style={{
-          willChange: 'transform',
-        }}
-      />
+        style={{ willChange: 'transform' }}
+      >
+        {mode === 'text' ? (
+          /* Vintage Typesetter's Proofing Gauge */
+          <div className="flex items-center gap-1 -translate-x-1/2 -translate-y-1/2 text-heading">
+            <span className="font-serif text-sm font-black leading-none select-none">⟦</span>
+            <div className="w-[1.5px] h-4 bg-border-ink" />
+            <span className="font-serif text-sm font-black leading-none select-none">⟧</span>
+          </div>
+        ) : (
+          /* Vintage Ink Fountain Nib Tip */
+          <svg 
+            width="18" 
+            height="18" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            className="text-border-ink -translate-x-1/2 -translate-y-1/2 drop-shadow-[1px_1px_0px_var(--bg-page)]"
+          >
+            {/* Nib Outline */}
+            <path
+              d="M12 2L4 14C4 18 7.5 22 12 22C16.5 22 20 18 20 14L12 2Z"
+              fill="var(--bg-page)"
+              stroke="var(--border-ink)"
+              strokeWidth="1.75"
+              strokeLinejoin="round"
+            />
+            {/* Center Ink Breather Hole & Split Line */}
+            <line x1="12" y1="2" x2="12" y2="13" stroke="var(--border-ink)" strokeWidth="1.5" />
+            <circle cx="12" cy="13" r="1.5" fill="var(--border-ink)" />
+          </svg>
+        )}
+      </div>
 
-      {/* Trailing Fluid Responsive Broadsheet Halo */}
+      {/* Trailing Mechanical Registration Loupe & Letterpress Halo */}
       <div
-        ref={ringRef}
+        ref={haloRef}
         className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center transition-[width,height,border-radius,border-color,background-color,opacity] duration-200 ease-out ${
           isVisible ? 'opacity-100' : 'opacity-0'
         } ${
           mode === 'text'
-            ? 'w-7 h-7 rounded-sm border border-dashed border-border-ink/50 bg-border-ink/5'
+            ? 'w-8 h-8 rounded-none border border-dashed border-border-ink/40 bg-border-ink/5'
             : mode === 'link'
-            ? 'w-12 h-12 rounded-full border border-border-ink bg-bg-page/85 shadow-md shadow-border-ink/10'
+            ? 'w-14 h-14 rounded-full border-2 border-border-ink bg-page/90 shadow-[3px_3px_0px_var(--border-ink)]'
             : mode === 'button'
-            ? 'w-14 h-14 rounded-full border-2 border-border-ink bg-bg-page/90 shadow-md shadow-border-ink/15'
+            ? 'w-16 h-16 rounded-full border-2 border-dashed border-border-ink bg-page/90 shadow-[3px_3px_0px_var(--border-ink)]'
             : isClicking
-            ? 'w-6 h-6 rounded-full border border-border-ink bg-border-ink/20'
-            : 'w-9 h-9 rounded-full border border-border-ink/60'
+            ? 'w-7 h-7 rounded-full border border-border-ink bg-border-ink/20'
+            : 'w-9 h-9 rounded-full border border-border-ink/50'
         }`}
-        style={{
-          willChange: 'transform',
-        }}
+        style={{ willChange: 'transform' }}
       >
-        {/* Context Label badge when hovering links or buttons */}
-        {(mode === 'link' || mode === 'button') && (
-          <span
-            ref={labelRef}
-            className="font-mono text-[9px] font-extrabold uppercase tracking-widest text-text-heading select-none animate-fadeIn"
-          >
-            {mode === 'button' ? 'PRESS' : 'READ'}
-          </span>
+        {/* Classical Printer's Cardinal Crosshairs in Default Mode */}
+        {mode === 'default' && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+            <span className="absolute top-0 w-[1px] h-1.5 bg-border-ink" />
+            <span className="absolute bottom-0 w-[1px] h-1.5 bg-border-ink" />
+            <span className="absolute left-0 w-1.5 h-[1px] bg-border-ink" />
+            <span className="absolute right-0 w-1.5 h-[1px] bg-border-ink" />
+          </div>
+        )}
+
+        {/* Vintage Monocle Loupe Crosshair in Link Mode */}
+        {mode === 'link' && (
+          <div className="flex flex-col items-center justify-center select-none animate-fadeIn">
+            <span className="font-mono text-[8.5px] font-black tracking-widest text-heading uppercase">
+              INSPECT
+            </span>
+            <div className="w-4 h-[1px] bg-border-ink/60 mt-0.5" />
+          </div>
+        )}
+
+        {/* Vintage Letterpress Seal in Button Mode */}
+        {mode === 'button' && (
+          <div className="flex flex-col items-center justify-center select-none animate-fadeIn">
+            <span className="font-mono text-[9px] font-black tracking-widest text-heading uppercase">
+              STAMP
+            </span>
+            <span className="font-mono text-[7px] text-muted uppercase">PRESS</span>
+          </div>
         )}
       </div>
     </div>

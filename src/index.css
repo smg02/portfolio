@@ -318,3 +318,65 @@ body {
     opacity: 0;
   }
 }
+
+/* 3D Paper Page Turning Animations */
+.animate-pageTurnBackdrop {
+  animation: pageTurnBackdropAnim 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes pageTurnBackdropAnim {
+  0% { opacity: 0; }
+  35% { opacity: 1; }
+  75% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+.animate-pageTurnSheet {
+  animation: pageTurnSheetAnim 0.65s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageTurnSheetAnim {
+  0% {
+    transform: translateX(100%) rotateY(0deg);
+    opacity: 0.95;
+  }
+  40% {
+    transform: translateX(0%) rotateY(-20deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translateX(-35%) rotateY(-65deg);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(-120%) rotateY(-90deg);
+    opacity: 0;
+  }
+}
+
+/* Vintage Letterpress Stamp Impression */
+.letterpress-impression {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999995;
+  border: 1.5px solid var(--border-ink);
+  background: color-mix(in oklab, var(--border-ink) 12%, transparent);
+  transform: translate(-50%, -50%) rotate(-4deg);
+  animation: letterpressFade 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes letterpressFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.9) rotate(-4deg);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1) rotate(-4deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.05) rotate(-4deg);
+  }
+}
+

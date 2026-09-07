@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { ThemeProvider } from './components/ThemeContext';
 import { ClickEffects } from './components/ClickEffects';
 import { CustomCursor } from './components/CustomCursor';
+import { PageTurn } from './components/PageTurn';
 
 // Production optimization: Lazy load components below the fold for faster initial load
 const About = lazy(() => import('./components/About').then(m => ({ default: m.About })));
@@ -17,6 +18,7 @@ export default function App() {
     <ThemeProvider>
       <div className="min-h-screen font-sans selection:bg-brand-primary selection:text-white">
         <CustomCursor />
+        <PageTurn />
         <ClickEffects />
         <Navbar />
         <main>
