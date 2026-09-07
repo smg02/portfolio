@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Sun, Moon, Radio } from 'lucide-react';
-import { useTheme } from './ThemeContext';
+import { Radio } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function Navbar() {
-  const { theme, toggleTheme } = useTheme();
   const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
@@ -79,27 +77,8 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Right Action Tools: Tactile Theme Switcher & Dispatch Button */}
+        {/* Right Action: Dispatch Button */}
         <div className="flex items-center gap-3">
-          <button
-            onClick={toggleTheme}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-border-ink bg-card font-mono text-xs font-bold text-heading shadow-[2px_2px_0px_var(--border-ink)] hover:translate-x-[-1px] hover:translate-y-[-1px] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
-            aria-label="Toggle between Morning Print and Midnight Edition"
-            title="Toggle print mode"
-          >
-            {theme === 'dark' ? (
-              <>
-                <Sun className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">DAY PRINT</span>
-              </>
-            ) : (
-              <>
-                <Moon className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">MIDNIGHT</span>
-              </>
-            )}
-          </button>
-
           <a
             href="#contact"
             className="btn-broadsheet px-3.5 sm:px-4 py-1.5 text-xs font-mono font-bold uppercase select-none inline-flex items-center gap-1.5"

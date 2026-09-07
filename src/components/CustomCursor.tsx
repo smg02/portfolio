@@ -3,34 +3,53 @@ import { useEffect, useRef, useState } from 'react';
 type CursorMode = 'default' | 'text' | 'link' | 'button';
 
 export function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const dotWrapperRef = useRef<HTMLDivElement>(null);
+  const ringWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Persistent coordinates that survive renders and clicks without jumping to (-100, -100)
+  const coordsRef = useRef({
+    mouseX: -500,
+    mouseY: -500,
+    ringX: -500,
+    ringY: -500,
+    hasMoved: false,
+    isVisible: false,
+  });
 
   const [mode, setMode] = useState<CursorMode>('default');
   const [isClicking, setIsClicking] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleState, setIsVisibleState] = useState(false);
 
   useEffect(() => {
     // Disable on touch devices
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
-    let mouseX = -100;
-    let mouseY = -100;
-    let ringX = -100;
-    let ringY = -100;
     let rafId: number;
 
     const onMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      if (!isVisible) setIsVisible(true);
+      const { clientX, clientY } = e;
+      const coords = coordsRef.current;
 
-      // Snap the precision center ink dot immediately
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      coords.mouseX = clientX;
+      coords.mouseY = clientY;
+
+      if (!coords.hasMoved) {
+        coords.ringX = clientX;
+        coords.ringY = clientY;
+        coords.hasMoved = true;
       }
 
-      // Detect hover target
+      if (!coords.isVisible) {
+        coords.isVisible = true;
+        setIsVisibleState(true);
+      }
+
+      // Directly update dot wrapper position immediately for 0ms lag
+      if (dotWrapperRef.current) {
+        dotWrapperRef.current.style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`;
+      }
+
+      // Context detection
       const target = e.target as HTMLElement | null;
       if (!target) return;
 
@@ -49,19 +68,34 @@ export function CustomCursor() {
       }
     };
 
-    const onMouseDown = () => setIsClicking(true);
-    const onMouseUp = () => setIsClicking(false);
-    const onMouseLeave = () => setIsVisible(false);
-    const onMouseEnter = () => setIsVisible(true);
+    const onMouseDown = () => {
+      setIsClicking(true);
+    };
 
-    // High-performance hardware accelerated RAF loop with buttery lerp
+    const onMouseUp = () => {
+      setIsClicking(false);
+    };
+
+    const onMouseLeave = () => {
+      coordsRef.current.isVisible = false;
+      setIsVisibleState(false);
+    };
+
+    const onMouseEnter = () => {
+      coordsRef.current.isVisible = true;
+      setIsVisibleState(true);
+    };
+
+    // Smooth trailing ring loop using hardware-accelerated lerp
     const loop = () => {
-      // 0.28 lerp factor provides a smooth, fluid physical trailing feel
-      ringX += (mouseX - ringX) * 0.28;
-      ringY += (mouseY - ringY) * 0.28;
+      const coords = coordsRef.current;
+      if (coords.hasMoved) {
+        coords.ringX += (coords.mouseX - coords.ringX) * 0.32;
+        coords.ringY += (coords.mouseY - coords.ringY) * 0.32;
 
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
+        if (ringWrapperRef.current) {
+          ringWrapperRef.current.style.transform = `translate3d(${coords.ringX}px, ${coords.ringY}px, 0)`;
+        }
       }
 
       rafId = requestAnimationFrame(loop);
@@ -83,56 +117,76 @@ export function CustomCursor() {
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
     };
-  }, [isVisible]);
+  }, []); // Run once on mount - no resets on click or state changes
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[999999] overflow-hidden select-none">
-      {/* Precision Center Ink Point (Instant response, zero lag) */}
+      {/* 1. Precision Center Dot Wrapper */}
       <div
-        ref={dotRef}
-        className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        } ${
-          mode === 'text'
-            ? 'w-1 h-4 rounded-[1px] bg-border-ink'
-            : isClicking
-            ? 'w-1.5 h-1.5 bg-border-ink scale-90'
-            : 'w-2 h-2 bg-border-ink'
-        }`}
-        style={{ willChange: 'transform' }}
-      />
-
-      {/* Fluid Responsive Editorial Halo / Lens */}
-      <div
-        ref={ringRef}
-        className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center transition-[width,height,border-radius,border-color,background-color,opacity,transform] duration-200 ease-out ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        } ${
-          mode === 'text'
-            ? 'w-6 h-6 rounded-none border border-dashed border-border-ink/30 bg-transparent'
-            : mode === 'link'
-            ? 'w-10 h-10 rounded-full border-2 border-border-ink bg-page/85 shadow-[2px_2px_0px_var(--border-ink)]'
-            : mode === 'button'
-            ? 'w-12 h-12 rounded-full border-2 border-border-ink bg-heading text-page shadow-[2px_2px_0px_var(--border-ink)]'
-            : isClicking
-            ? 'w-6 h-6 rounded-full border border-border-ink bg-border-ink/15 scale-90'
-            : 'w-8 h-8 rounded-full border border-border-ink/50'
+        ref={dotWrapperRef}
+        className={`fixed top-0 left-0 transition-opacity duration-150 pointer-events-none ${
+          isVisibleState ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ willChange: 'transform' }}
       >
-        {/* Modern Link Direction Indicator */}
-        {mode === 'link' && (
-          <span className="font-mono text-[11px] font-bold text-heading leading-none animate-fadeIn">
-            ↗
-          </span>
-        )}
+        {/* Centered container with fixed -50% translate to eliminate any jump */}
+        <div 
+          className="flex items-center justify-center pointer-events-none"
+          style={{ transform: 'translate(-50%, -50%)' }}
+        >
+          <div
+            className={`transition-[width,height,background-color] duration-150 ${
+              mode === 'text'
+                ? 'w-1 h-4 rounded-[1px] bg-border-ink'
+                : isClicking
+                ? 'w-1.5 h-1.5 rounded-full bg-border-ink'
+                : 'w-2 h-2 rounded-full bg-border-ink'
+            }`}
+          />
+        </div>
+      </div>
 
-        {/* Tactile Button Label */}
-        {mode === 'button' && (
-          <span className="font-mono text-[9px] font-black uppercase tracking-tight text-page leading-none animate-fadeIn">
-            GO
-          </span>
-        )}
+      {/* 2. Fluid Responsive Halo Wrapper */}
+      <div
+        ref={ringWrapperRef}
+        className={`fixed top-0 left-0 transition-opacity duration-150 pointer-events-none ${
+          isVisibleState ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{ willChange: 'transform' }}
+      >
+        {/* Centered container with fixed -50% translate to eliminate any jump */}
+        <div 
+          className="flex items-center justify-center pointer-events-none"
+          style={{ transform: 'translate(-50%, -50%)' }}
+        >
+          <div
+            className={`flex items-center justify-center transition-[width,height,border-radius,border-color,background-color,box-shadow] duration-150 ease-out pointer-events-none ${
+              mode === 'text'
+                ? 'w-5 h-5 rounded-none border border-dashed border-border-ink/30 bg-transparent'
+                : mode === 'link'
+                ? 'w-10 h-10 rounded-full border-2 border-border-ink bg-page/85 shadow-[2px_2px_0px_var(--border-ink)]'
+                : mode === 'button'
+                ? 'w-12 h-12 rounded-full border-2 border-border-ink bg-heading text-page shadow-[2px_2px_0px_var(--border-ink)]'
+                : isClicking
+                ? 'w-6 h-6 rounded-full border border-border-ink bg-border-ink/15'
+                : 'w-8 h-8 rounded-full border border-border-ink/50'
+            }`}
+          >
+            {/* Modern Link Direction Indicator */}
+            {mode === 'link' && (
+              <span className="font-mono text-[11px] font-bold text-heading leading-none select-none">
+                ↗
+              </span>
+            )}
+
+            {/* Tactile Button Label */}
+            {mode === 'button' && (
+              <span className="font-mono text-[9px] font-black uppercase tracking-tight text-page leading-none select-none">
+                GO
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

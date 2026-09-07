@@ -83,28 +83,15 @@ html.dark {
 
 html {
   scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-ink) var(--bg-page);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* Custom Themed Scrollbar */
+/* Hide default browser scrollbar so custom left-side scrollbar takes over */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-page);
-  border-left: 1px solid var(--border-subtle);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--border-ink);
-  border-radius: 0px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--text-muted);
+  display: none;
+  width: 0px;
+  background: transparent;
 }
 
 body {

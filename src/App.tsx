@@ -5,6 +5,8 @@ import { ThemeProvider } from './components/ThemeContext';
 import { ClickEffects } from './components/ClickEffects';
 import { CustomCursor } from './components/CustomCursor';
 import { PageTurn } from './components/PageTurn';
+import { BroadsheetScrollbar } from './components/BroadsheetScrollbar';
+import { ThemeToggle } from './components/ThemeToggle';
 
 // Production optimization: Lazy load components below the fold for faster initial load
 const About = lazy(() => import('./components/About').then(m => ({ default: m.About })));
@@ -18,10 +20,12 @@ export default function App() {
     <ThemeProvider>
       <div className="min-h-screen font-sans selection:bg-brand-primary selection:text-white">
         <CustomCursor />
+        <BroadsheetScrollbar />
+        <ThemeToggle />
         <PageTurn />
         <ClickEffects />
         <Navbar />
-        <main id="content-main" className="origin-center transition-filter duration-150">
+        <main id="content-main" className="origin-center transition-filter duration-150 pl-6 sm:pl-10 md:pl-12">
           <Hero />
           <Suspense fallback={<div className="py-24 text-center text-muted font-mono text-xs uppercase tracking-widest">TYPESETTING DISPATCHES...</div>}>
             <About />
@@ -31,7 +35,9 @@ export default function App() {
           </Suspense>
         </main>
         <Suspense fallback={null}>
-          <Footer />
+          <div className="pl-6 sm:pl-10 md:pl-12">
+            <Footer />
+          </div>
         </Suspense>
       </div>
     </ThemeProvider>
