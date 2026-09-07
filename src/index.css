@@ -319,54 +319,43 @@ body {
   }
 }
 
-/* Directional Broadsheet Rotary Press Motion (Top-to-Bottom / Bottom-to-Top) */
-.animate-pressRollDown {
-  animation: pressRollDownAnim 0.38s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+/* Anime Fast-Action Motion & Speedlines */
+.anime-speedlines-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999980;
+  overflow: hidden;
+  animation: animeFlash 0.32s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
 }
 
-@keyframes pressRollDownAnim {
-  0% {
-    transform: translate3d(0, -100%, 0);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translate3d(0, 0%, 0);
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(0, 100%, 0);
-    opacity: 0.85;
-  }
+@keyframes animeFlash {
+  0% { opacity: 0; transform: scaleY(0.7); }
+  25% { opacity: 0.85; transform: scaleY(1.1); }
+  60% { opacity: 0.6; transform: scaleY(1.05); }
+  100% { opacity: 0; transform: scaleY(1); }
 }
 
-.animate-pressRollUp {
-  animation: pressRollUpAnim 0.38s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+.anime-motion-content-down {
+  animation: animeMotionDownAnim 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
 }
 
-@keyframes pressRollUpAnim {
-  0% {
-    transform: translate3d(0, 100%, 0);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translate3d(0, 0%, 0);
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(0, -100%, 0);
-    opacity: 0.85;
-  }
+@keyframes animeMotionDownAnim {
+  0% { transform: scaleY(1); filter: blur(0px); }
+  35% { transform: scaleY(1.03) translateY(-14px); filter: blur(2px); }
+  75% { transform: scaleY(1.01) translateY(-3px); filter: blur(0.8px); }
+  100% { transform: scaleY(1) translateY(0); filter: blur(0px); }
 }
 
-.animate-pressBackdrop {
-  animation: pressBackdropAnim 0.38s ease-out forwards;
+.anime-motion-content-up {
+  animation: animeMotionUpAnim 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
 }
 
-@keyframes pressBackdropAnim {
-  0% { opacity: 0; }
-  35% { opacity: 0.2; }
-  75% { opacity: 0.2; }
-  100% { opacity: 0; }
+@keyframes animeMotionUpAnim {
+  0% { transform: scaleY(1); filter: blur(0px); }
+  35% { transform: scaleY(1.03) translateY(14px); filter: blur(2px); }
+  75% { transform: scaleY(1.01) translateY(3px); filter: blur(0.8px); }
+  100% { transform: scaleY(1) translateY(0); filter: blur(0px); }
 }
 
 /* Vintage Letterpress Stamp Impression */

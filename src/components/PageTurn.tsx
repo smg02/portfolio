@@ -25,24 +25,31 @@ export function PageTurn() {
 
         const currentY = window.scrollY;
         const targetY = targetElement 
-          ? targetElement.getBoundingClientRect().top + window.scrollY - 75 
+          ? targetElement.getBoundingClientRect().top + window.scrollY - 70 
           : 0;
 
-        // Determine if navigating downward or upward
         const dir = targetY >= currentY ? 'down' : 'up';
         setDirection(dir);
         setIsActive(true);
 
-        // Fast-paced kinetic scroll occurs concurrently WITH the motion
+        // Apply fast-action anime kinetic motion directly to the page content!
+        const mainContent = document.querySelector('main') || document.body;
+        const motionClass = dir === 'down' ? 'anime-motion-content-down' : 'anime-motion-content-up';
+        mainContent.classList.remove('anime-motion-content-down', 'anime-motion-content-up');
+        void (mainContent as HTMLElement).offsetWidth; // trigger reflow
+        mainContent.classList.add(motionClass);
+
+        // Immediate fast smooth scroll
         window.scrollTo({
           top: Math.max(0, targetY),
           behavior: 'smooth'
         });
 
-        // End motion precisely as scroll completes
+        // Clear anime motion classes when scroll reaches target
         setTimeout(() => {
+          mainContent.classList.remove('anime-motion-content-down', 'anime-motion-content-up');
           setIsActive(false);
-        }, 390);
+        }, 340);
       }
     };
 
@@ -55,30 +62,47 @@ export function PageTurn() {
   if (!isActive) return null;
 
   return (
-    <div className="fixed inset-0 z-[999990] pointer-events-none overflow-hidden select-none">
-      {/* Dynamic Directional Printing Press Paper Motion Overlay */}
-      <div
-        className={`absolute inset-x-0 w-full h-[120vh] bg-page border-y-2 border-border-ink shadow-[0_0_50px_rgba(0,0,0,0.3)] ${
-          direction === 'down' ? 'animate-pressRollDown' : 'animate-pressRollUp'
-        }`}
+    <div className="anime-speedlines-overlay">
+      {/* Anime Fast-Action Speedlines Canvas Effect */}
+      <svg
+        className="w-full h-full opacity-60 text-border-ink"
+        viewBox="0 0 1000 1000"
+        preserveAspectRatio="none"
+        fill="none"
       >
-        {/* Newsprint Crease & Directional Motion Texture */}
-        <div className="absolute inset-0 bg-gradient-to-b from-border-ink/10 via-transparent to-border-ink/10 pointer-events-none" />
-
-        {/* Directional Broadsheet Guidelines */}
-        <div className="max-w-7xl mx-auto h-full px-6 flex flex-col justify-between py-12 border-x border-border-subtle/40 opacity-40">
-          <div className="flex justify-between font-mono text-[10px] uppercase text-muted tracking-widest border-b border-border-subtle pb-2">
-            <span>THE BOTPLAYGROUND PRESS</span>
-            <span>{direction === 'down' ? '▼ ADVANCING DOWNWARD' : '▲ REWINDING UPWARD'}</span>
-            <span>ROTARY EDITION</span>
-          </div>
-
-          <div className="flex justify-between font-mono text-[10px] uppercase text-muted tracking-widest border-t border-border-subtle pt-2">
-            <span>HIGH-SPEED MECHANICAL FEED</span>
-            <span>DISPATCH TRANSIT</span>
-          </div>
-        </div>
-      </div>
+        {/* Dynamic vertical speedlines array mimicking high-octane anime acceleration */}
+        {[
+          { x: 30, w: 2.5, y1: 0, y2: 650, opacity: 0.8 },
+          { x: 75, w: 1.2, y1: 150, y2: 900, opacity: 0.5 },
+          { x: 120, w: 3, y1: 0, y2: 700, opacity: 0.9 },
+          { x: 170, w: 1.5, y1: 300, y2: 1000, opacity: 0.6 },
+          { x: 230, w: 2.2, y1: 50, y2: 850, opacity: 0.75 },
+          { x: 290, w: 1, y1: 0, y2: 600, opacity: 0.4 },
+          { x: 350, w: 3.5, y1: 200, y2: 1000, opacity: 0.95 },
+          { x: 420, w: 1.8, y1: 0, y2: 750, opacity: 0.7 },
+          { x: 480, w: 2.8, y1: 100, y2: 950, opacity: 0.85 },
+          { x: 550, w: 1.4, y1: 0, y2: 800, opacity: 0.5 },
+          { x: 610, w: 3.2, y1: 150, y2: 1000, opacity: 0.9 },
+          { x: 670, w: 1.6, y1: 0, y2: 650, opacity: 0.6 },
+          { x: 730, w: 2.4, y1: 250, y2: 950, opacity: 0.8 },
+          { x: 790, w: 1.2, y1: 0, y2: 700, opacity: 0.45 },
+          { x: 840, w: 3.8, y1: 80, y2: 1000, opacity: 0.95 },
+          { x: 910, w: 1.5, y1: 0, y2: 850, opacity: 0.65 },
+          { x: 960, w: 2.6, y1: 180, y2: 980, opacity: 0.85 },
+        ].map((line, idx) => (
+          <line
+            key={idx}
+            x1={line.x}
+            y1={direction === 'down' ? line.y1 : 1000 - line.y1}
+            x2={line.x}
+            y2={direction === 'down' ? line.y2 : 1000 - line.y2}
+            stroke="currentColor"
+            strokeWidth={line.w}
+            strokeDasharray="40 15 80 20"
+            opacity={line.opacity}
+          />
+        ))}
+      </svg>
     </div>
   );
 }
