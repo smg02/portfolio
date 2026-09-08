@@ -84,7 +84,7 @@ export function Footer() {
             <span className="text-border-subtle hidden sm:inline">◆</span>
 
             <a
-              href="mailto:syedmdghouse02@gmail.com"
+              href="mailto:ghouse@botplayground.co.in"
               className="inline-flex items-center gap-1.5 hover:underline decoration-1 underline-offset-4"
             >
               <Mail className="w-4 h-4" />
@@ -96,7 +96,7 @@ export function Footer() {
         {/* Colophon & Publication Credits */}
         <div className="mt-16 pt-6 border-t border-border-subtle flex flex-col md:flex-row items-center justify-between text-[11px] font-mono text-muted gap-4">
           <div>
-            © 2026 Mohammed Ghouse — Typeset in Playfair Display, Newsreader & Space Grotesk.
+            © 2026 Mohammed Ghouse — All Rights Reserved.
           </div>
           <div className="flex items-center gap-4 text-heading font-bold uppercase">
             <a href="#" className="hover:underline">TOP OF EDITION ↑</a>
