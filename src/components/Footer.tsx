@@ -14,7 +14,7 @@ export function Footer() {
       </div>
 
       {/* Main Telegram Dispatch Box */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
@@ -49,10 +49,10 @@ export function Footer() {
           {/* Action Button: Transmit via Telegram */}
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="mailto:syedmdghouse02@gmail.com"
+              href="mailto:ghouse@botplayground.co.in"
               className="btn-broadsheet inline-flex items-center justify-center gap-2.5 px-8 py-4 text-xs sm:text-sm uppercase tracking-wider w-full sm:w-auto"
             >
-              <span>syedmdghouse02@gmail.com</span>
+              <span>ghouse@botplayground.co.in</span>
               <Send className="w-4 h-4" />
             </a>
           </div>
