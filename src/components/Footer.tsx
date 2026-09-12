@@ -49,10 +49,10 @@ export function Footer() {
           {/* Action Button: Transmit via Telegram */}
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="mailto:ghouse@botplayground.co.in"
+              href="mailto:ghouse@ghouse.botplayground.co.in"
               className="btn-broadsheet inline-flex items-center justify-center gap-2.5 px-8 py-4 text-xs sm:text-sm uppercase tracking-wider w-full sm:w-auto"
             >
-              <span>ghouse@botplayground.co.in</span>
+              <span>ghouse@ghouse.botplayground.co.in</span>
               <Send className="w-4 h-4" />
             </a>
           </div>
@@ -84,7 +84,7 @@ export function Footer() {
             <span className="text-border-subtle hidden sm:inline">◆</span>
 
             <a
-              href="mailto:ghouse@botplayground.co.in"
+              href="mailto:ghouse@ghouse.botplayground.co.in"
               className="inline-flex items-center gap-1.5 hover:underline decoration-1 underline-offset-4"
             >
               <Mail className="w-4 h-4" />
@@ -96,7 +96,7 @@ export function Footer() {
         {/* Colophon & Publication Credits */}
         <div className="mt-16 pt-6 border-t border-border-subtle flex flex-col md:flex-row items-center justify-between text-[11px] font-mono text-muted gap-4">
           <div>
-            © 2026 Mohammed Ghouse — All Rights Reserved.
+            © 2026 Syed Mohammed Ghouse — All Rights Reserved.
           </div>
           <div className="flex items-center gap-4 text-heading font-bold uppercase">
             <a href="#" className="hover:underline">TOP OF EDITION ↑</a>

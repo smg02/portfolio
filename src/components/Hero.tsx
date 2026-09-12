@@ -22,18 +22,17 @@ export function Hero() {
 
         {/* Grand Newspaper Masthead Title */}
         <h1 className="font-serif text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-heading leading-[0.92] my-3">
-          BotPlayground
-          <span className="sr-only"> — Mohammed Ghouse (Syed Mohammed Ghouse) | Python Developer & Data Engineer</span>
+          Syed Mohammed Ghouse
         </h1>
 
-        {/* Publisher Credit & Name Anchor */}
-        <div className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-heading mt-1 mb-2">
-          THE ENGINEERING DISPATCHES OF MOHAMMED GHOUSE <span className="text-muted font-normal">(SYED MOHAMMED GHOUSE)</span>
-        </div>
+        {/* Professional Title & Sub-heading */}
+        <h2 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-heading mt-1 mb-2">
+          Python Developer &amp; Data Engineer <span className="text-muted font-normal">— The BotPlayground Dispatch</span>
+        </h2>
 
-        {/* Motto / Sub-masthead */}
-        <p className="font-serif italic text-sm sm:text-base md:text-lg text-muted mt-1 mb-4">
-          "All the code that's fit to run — Architectural rigor, autonomous engines, and deterministic pipelines."
+        {/* Narrative Intro Paragraph */}
+        <p className="font-serif italic text-sm sm:text-base md:text-lg text-muted mt-1 mb-4 max-w-3xl mx-auto">
+          "I’m Syed Mohammed Ghouse, a Python Developer and Data Engineer focused on ETL pipelines, financial data processing, backend automation, and reliable data extraction systems."
         </p>
 
         {/* Double Rule separating Masthead from Front Page Stories */}
@@ -66,7 +65,7 @@ export function Hero() {
           {/* Dateline & Byline */}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border-subtle pb-3">
             <div className="font-mono text-xs text-muted uppercase tracking-wider">
-              <span className="font-bold text-heading">BY MOHAMMED GHOUSE</span>
+              <span className="font-bold text-heading">BY SYED MOHAMMED GHOUSE</span>
               <span className="mx-2">/</span>
               <span>SPECIAL DISPATCH FROM VELLORE</span>
             </div>
@@ -77,9 +76,9 @@ export function Hero() {
 
           {/* Lead Headline */}
           <div className="space-y-3">
-            <h2 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-heading leading-[1.05]">
+            <h3 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-heading leading-[1.05]">
               We build resilient systems that turn complex, chaotic data into autonomous engines.
-            </h2>
+            </h3>
             <p className="font-sans text-base sm:text-lg text-muted font-medium leading-relaxed">
               Specializing in fault-tolerant data pipelines, automated ETL infrastructure, high-concurrency backend services, and scalable scrapers engineered never to drop a tick.
             </p>

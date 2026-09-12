@@ -26,11 +26,11 @@ export function About() {
             [ESSAY // FIRST PRINCIPLES]
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl font-black text-heading tracking-tight leading-tight">
-            Why name it "Bot Playground"?
+            About // Why name it "Bot Playground"?
           </h2>
           <div className="pt-2 flex items-center gap-3 font-mono text-xs text-muted border-t border-border-subtle">
             <Feather className="w-4 h-4 text-heading" />
-            <span>ESSAY BY MOHAMMED GHOUSE</span>
+            <span>ESSAY BY SYED MOHAMMED GHOUSE</span>
           </div>
           <p className="text-sm text-muted font-editorial italic leading-relaxed pt-2">
             "Play isn't triviality. In systems engineering, playful iteration is the only rigorous path toward discovering edge cases before production discovers them for you."

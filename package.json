@@ -2,7 +2,7 @@
   "name": "botplayground-portfolio",
   "private": true,
   "version": "1.0.0",
-  "homepage": "https://botplayground.co.in",
+  "homepage": "https://ghouse.botplayground.co.in",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",

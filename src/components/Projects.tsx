@@ -81,7 +81,7 @@ export function Projects() {
             VERIFIED CASE LOGS
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-black text-heading tracking-tight">
-            Selected System Deployments
+            Projects // Selected Deployments
           </h2>
         </div>
 

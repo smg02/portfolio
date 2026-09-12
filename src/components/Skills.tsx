@@ -70,7 +70,7 @@ export function Skills() {
           REGISTERED ARSENAL
         </span>
         <h2 className="font-serif text-3xl sm:text-5xl font-black text-heading tracking-tight">
-          Tools, Runtimes & Instruments
+          Technical Skills // Tools &amp; Runtimes
         </h2>
         <p className="font-editorial italic text-base sm:text-lg text-muted mt-2">
           All equipment certified for continuous autonomous operations and high-load production workloads.

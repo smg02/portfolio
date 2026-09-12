@@ -1,6 +1,9 @@
 {
   "name": "BotPlayground — Mohammed Ghouse",
   "short_name": "BotPlayground",
+  "id": "https://ghouse.botplayground.co.in/",
+  "start_url": "https://ghouse.botplayground.co.in/",
+  "scope": "/",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
